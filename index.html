@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-TOURÉ SERVICE – Déménagement Professionnel</title>
+  <link rel="shortcut icon" href="favicon_32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --jaune: #F5E642;
+      --jaune-clair: #FFF176;
+      --jaune-fonce: #D4C800;
+      --bleu: #0D1B3E;
+      --bleu-moyen: #1A2F6B;
+      --bleu-clair: #2A4999;
+      --blanc: #FFFFFF;
+      --gris: #f4f4f4;
+      --ombre: rgba(13,27,62,0.18);
+      --radius: 18px;
+      --transition: 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Raleway', sans-serif; background: var(--blanc); color: var(--bleu); overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)} }
+    @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(245,230,66,.45)}70%{box-shadow:0 0 0 22px rgba(245,230,66,0)}100%{box-shadow:0 0 0 0 rgba(245,230,66,0)} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)} }
+
+    /* NAV */
+    nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--bleu);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:70px;box-shadow:0 4px 24px var(--ombre);transition:var(--transition); }
+    nav.scrolled { height:58px;background:rgba(13,27,62,0.97);backdrop-filter:blur(12px); }
+    .nav-logo { font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(.95rem,2.5vw,1.35rem);color:var(--jaune);letter-spacing:2px;display:flex;align-items:center;gap:10px;text-transform:uppercase; }
+    .nav-icon { font-size:1.8rem;animation:float 3s ease-in-out infinite;display:inline-block; }
+    .nav-links { display:flex;gap:2rem;align-items:center; }
+    .nav-links a { color:var(--blanc);font-weight:600;font-size:.9rem;letter-spacing:1px;padding:4px 0;border-bottom:2px solid transparent;transition:var(--transition);text-transform:uppercase; }
+    .nav-links a:hover { color:var(--jaune);border-bottom-color:var(--jaune); }
+    .nav-cta { background:var(--jaune)!important;color:var(--bleu)!important;padding:8px 20px!important;border-radius:30px!important;border-bottom:none!important;font-weight:700!important;animation:pulse-ring 2.5s ease-in-out infinite; }
+    .nav-cta:hover { background:var(--jaune-fonce)!important;transform:scale(1.06); }
+    .hamburger { display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px; }
+    .hamburger span { width:26px;height:3px;background:var(--jaune);border-radius:3px;transition:var(--transition); }
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
+    .mobile-menu { display:none;position:fixed;top:70px;left:0;right:0;background:var(--bleu-moyen);z-index:999;flex-direction:column;padding:1.5rem 5vw;gap:1.2rem;box-shadow:0 8px 24px var(--ombre); }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--blanc);font-weight:600;font-size:1rem;text-transform:uppercase;letter-spacing:1px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1); }
+    .mobile-menu a:hover { color:var(--jaune); }
+
+    /* HERO */
+    #hero { min-height:100vh;background:linear-gradient(135deg,var(--bleu) 0%,var(--bleu-moyen) 55%,var(--bleu-clair) 100%);display:flex;align-items:center;padding:100px 5vw 60px;position:relative;overflow:hidden; }
+    .hero-bg-circles { position:absolute;inset:0;pointer-events:none; }
+    .hero-bg-circles span { position:absolute;border-radius:50%;background:rgba(245,230,66,.07); }
+    .hero-bg-circles span:nth-child(1){width:500px;height:500px;top:-100px;right:-100px}
+    .hero-bg-circles span:nth-child(2){width:300px;height:300px;bottom:40px;left:-80px;background:rgba(245,230,66,.05)}
+    .hero-bg-circles span:nth-child(3){width:180px;height:180px;top:40%;left:40%;background:rgba(255,255,255,.04)}
+    .hero-inner { display:flex;align-items:center;justify-content:space-between;gap:3rem;width:100%;max-width:1200px;margin:0 auto; }
+    .hero-text { flex:1;animation:slideIn .8s ease forwards; }
+    .hero-badge { display:inline-block;background:var(--jaune);color:var(--bleu);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:6px 16px;border-radius:30px;margin-bottom:1.2rem; }
+    .hero-text h1 { font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.8rem);color:var(--blanc);line-height:1.1;margin-bottom:1rem;text-transform:uppercase; }
+    .hero-text h1 span { color:var(--jaune); }
+    .hero-text p { color:rgba(255,255,255,.78);font-size:clamp(.95rem,2vw,1.15rem);line-height:1.7;max-width:480px;margin-bottom:2rem; }
+    .hero-btns { display:flex;flex-wrap:wrap;gap:1rem; }
+    .btn-primary { background:var(--jaune);color:var(--bleu);font-weight:700;font-size:1rem;padding:14px 34px;border-radius:40px;border:none;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:8px;animation:pulse-ring 2.5s ease-in-out infinite;text-transform:uppercase;letter-spacing:1px; }
+    .btn-primary:hover { background:var(--jaune-fonce);transform:translateY(-3px) scale(1.04); }
+    .btn-outline { background:transparent;color:var(--blanc);font-weight:700;font-size:1rem;padding:14px 34px;border-radius:40px;border:2px solid rgba(255,255,255,.5);cursor:pointer;transition:var(--transition);text-transform:uppercase;letter-spacing:1px; }
+    .btn-outline:hover { border-color:var(--jaune);color:var(--jaune);transform:translateY(-3px); }
+
+    /* TRUCK 3D */
+    .hero-3d { flex:0 0 460px;max-width:460px;animation:fadeUp 1s .3s both; }
+    .truck-scene { position:relative;animation:float 4s ease-in-out infinite; }
+    .truck-svg { width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.55)); }
+
+    /* STATS */
+    .stats-bar { background:var(--jaune);padding:32px 5vw; }
+    .stats-inner { display:flex;justify-content:space-around;flex-wrap:wrap;gap:1.5rem;max-width:1100px;margin:0 auto; }
+    .stat-item { text-align:center; }
+    .stat-item .num { font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,4vw,3rem);color:var(--bleu);line-height:1; }
+    .stat-item .label { font-size:.88rem;font-weight:600;color:var(--bleu-moyen);text-transform:uppercase;letter-spacing:1px;margin-top:4px; }
+
+    /* SECTIONS */
+    section { padding:80px 5vw; }
+    .section-title { text-align:center;margin-bottom:3rem; }
+    .section-title .tag { display:inline-block;background:var(--jaune);color:var(--bleu);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:5px 14px;border-radius:30px;margin-bottom:.8rem; }
+    .section-title h2 { font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--bleu);text-transform:uppercase; }
+    .section-title h2 span { color:var(--bleu-clair); }
+    .section-title p { color:#555;max-width:560px;margin:.8rem auto 0;line-height:1.7; }
+
+    /* GALERIE */
+    #galerie { background:var(--blanc); }
+    .galerie-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1100px;margin:0 auto; }
+    .galerie-item { border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:4/3;box-shadow:0 6px 24px var(--ombre);cursor:pointer; }
+    .galerie-item img { width:100%;height:100%;object-fit:cover;transition:transform .5s ease; }
+    .galerie-item:hover img { transform:scale(1.08); }
+    .galerie-item .overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(13,27,62,.75) 0%,transparent 60%);opacity:0;transition:var(--transition);display:flex;align-items:flex-end;padding:1.2rem; }
+    .galerie-item:hover .overlay { opacity:1; }
+    .galerie-item .overlay span { color:var(--jaune);font-weight:700;font-size:.95rem;text-transform:uppercase;letter-spacing:1px; }
+    .galerie-item.large { grid-column:span 2; }
+
+    /* SERVICES */
+    #services { background:var(--gris); }
+    .services-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;max-width:1200px;margin:0 auto; }
+    .service-card { background:var(--blanc);border-radius:var(--radius);padding:2.2rem 1.8rem;box-shadow:0 6px 30px var(--ombre);transition:var(--transition);position:relative;overflow:hidden;border-bottom:4px solid transparent; }
+    .service-card::before { content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--jaune);transform:scaleX(0);transition:var(--transition);transform-origin:left; }
+    .service-card:hover::before { transform:scaleX(1); }
+    .service-card:hover { transform:translateY(-10px);box-shadow:0 20px 50px rgba(13,27,62,.18);border-bottom-color:var(--jaune); }
+    .service-icon { width:70px;height:70px;background:var(--bleu);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:1.2rem;transition:transform .7s ease, background .3s; }
+    .service-card:hover .service-icon { background:var(--jaune);transform:rotateY(360deg); }
+    .service-card h3 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;text-transform:uppercase;color:var(--bleu);margin-bottom:.7rem; }
+    .service-card p { color:#666;font-size:.93rem;line-height:1.6; }
+
+    /* POURQUOI */
+    #pourquoi { background:var(--bleu);color:var(--blanc); }
+    #pourquoi .section-title h2 { color:var(--blanc); }
+    #pourquoi .section-title p { color:rgba(255,255,255,.7); }
+    .why-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem;max-width:1100px;margin:0 auto; }
+    .why-card { background:rgba(255,255,255,.07);border:1px solid rgba(245,230,66,.2);border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;transition:var(--transition);backdrop-filter:blur(6px); }
+    .why-card:hover { background:rgba(245,230,66,.12);border-color:var(--jaune);transform:translateY(-8px); }
+    .why-card .icon { font-size:2.8rem;margin-bottom:1rem;display:block; }
+    .why-card h3 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;color:var(--jaune);margin-bottom:.6rem; }
+    .why-card p { color:rgba(255,255,255,.75);font-size:.9rem;line-height:1.6; }
+
+    /* PROCESSUS */
+    #processus { background:var(--blanc); }
+    .process-steps { display:flex;flex-wrap:wrap;justify-content:center;gap:0;max-width:1100px;margin:0 auto;position:relative; }
+    .process-steps::before { content:'';position:absolute;top:45px;left:10%;right:10%;height:3px;background:linear-gradient(90deg,var(--jaune),var(--bleu-clair));z-index:0; }
+    .step { flex:1;min-width:160px;max-width:220px;text-align:center;padding:1.2rem;position:relative;z-index:1;transition:var(--transition); }
+    .step:hover { transform:translateY(-8px); }
+    .step-num { width:70px;height:70px;background:var(--bleu);color:var(--jaune);font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.4rem;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:4px solid var(--jaune);box-shadow:0 0 0 6px rgba(245,230,66,.15);transition:var(--transition); }
+    .step:hover .step-num { background:var(--jaune);color:var(--bleu);box-shadow:0 0 0 10px rgba(245,230,66,.2); }
+    .step h3 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:.95rem;color:var(--bleu);text-transform:uppercase;margin-bottom:.5rem; }
+    .step p { color:#777;font-size:.85rem;line-height:1.5; }
+
+    /* TEMOIGNAGES */
+    #temoignages { background:var(--gris); }
+    .temoignages-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:1100px;margin:0 auto; }
+    .temoignage-card { background:var(--blanc);border-radius:var(--radius);padding:2rem;box-shadow:0 6px 24px var(--ombre);border-left:5px solid var(--jaune);transition:var(--transition); }
+    .temoignage-card:hover { transform:translateY(-6px);box-shadow:0 16px 40px var(--ombre); }
+    .stars { color:var(--jaune);font-size:1.2rem;margin-bottom:.8rem; }
+    .temoignage-card blockquote { font-style:italic;color:#555;font-size:.95rem;line-height:1.7;margin-bottom:1.2rem; }
+    .author { display:flex;align-items:center;gap:.8rem; }
+    .author-avatar { width:44px;height:44px;border-radius:50%;background:var(--bleu);color:var(--jaune);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem; }
+    .author-info strong { display:block;color:var(--bleu);font-weight:700;font-size:.95rem; }
+    .author-info span { color:#999;font-size:.82rem; }
+
+    /* TARIFS */
+    #tarifs { background:var(--blanc); }
+    .tarifs-grid { display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;max-width:1100px;margin:0 auto; }
+    .tarif-card { background:var(--blanc);border:2px solid #eee;border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;flex:1;min-width:240px;max-width:320px;transition:var(--transition);position:relative;overflow:hidden; }
+    .tarif-card.popular { border-color:var(--jaune);background:var(--bleu);color:var(--blanc);transform:scale(1.04);box-shadow:0 20px 50px rgba(13,27,62,.25); }
+    .tarif-card.popular h3,.tarif-card.popular .price,.tarif-card.popular ul li { color:var(--blanc); }
+    .popular-badge { position:absolute;top:16px;right:-28px;background:var(--jaune);color:var(--bleu);font-size:.72rem;font-weight:700;text-transform:uppercase;padding:4px 40px;transform:rotate(40deg);letter-spacing:1px; }
+    .tarif-card:hover:not(.popular) { border-color:var(--bleu-clair);transform:translateY(-8px);box-shadow:0 16px 40px var(--ombre); }
+    .tarif-card h3 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;text-transform:uppercase;color:var(--bleu);margin-bottom:.5rem; }
+    .tarif-card .price { font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.2rem;color:var(--bleu);margin:.8rem 0; }
+    .tarif-card .price span { font-size:1rem;font-weight:400; }
+    .tarif-card ul { margin:1.2rem 0 1.8rem; }
+    .tarif-card ul li { color:#555;font-size:.9rem;padding:.45rem 0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:.5rem; }
+    .tarif-card.popular ul li { border-color:rgba(255,255,255,.1); }
+    .tarif-card ul li::before { content:'✓';color:var(--jaune);font-weight:700; }
+
+    /* DEVIS */
+    #devis { background:linear-gradient(135deg,var(--bleu) 0%,var(--bleu-moyen) 100%);color:var(--blanc); }
+    #devis .section-title h2 { color:var(--blanc); }
+    #devis .section-title p { color:rgba(255,255,255,.7); }
+    .devis-form { max-width:680px;margin:0 auto;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(245,230,66,.2);border-radius:24px;padding:2.5rem; }
+    .form-row { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem; }
+    .form-group { display:flex;flex-direction:column;gap:.4rem; }
+    .form-group.full { grid-column:span 2; }
+    .form-group label { font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--jaune); }
+    .form-group input,.form-group select,.form-group textarea { padding:12px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:var(--blanc);font-family:'Raleway',sans-serif;font-size:.95rem;transition:var(--transition);outline:none; }
+    .form-group input::placeholder,.form-group textarea::placeholder { color:rgba(255,255,255,.45); }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:var(--jaune);background:rgba(255,255,255,.15);box-shadow:0 0 0 3px rgba(245,230,66,.2); }
+    .form-group select option { background:var(--bleu);color:var(--blanc); }
+    .form-group textarea { resize:vertical;min-height:110px; }
+    .form-submit { text-align:center;margin-top:1.4rem; }
+    .form-submit button { background:var(--jaune);color:var(--bleu);font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;padding:16px 50px;border:none;border-radius:40px;cursor:pointer;transition:var(--transition);animation:pulse-ring 2.5s ease-in-out infinite; }
+    .form-submit button:hover { background:var(--jaune-fonce);transform:scale(1.05) translateY(-2px); }
+    .form-submit button:disabled { opacity:.7;cursor:not-allowed;animation:none;transform:none; }
+
+    /* Message succès */
+    .form-success { display:none;text-align:center;padding:2rem;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);border-radius:16px;margin-top:1rem; }
+    .form-success .success-icon { font-size:3rem;margin-bottom:1rem; }
+    .form-success h3 { color:#4ade80;font-family:'Montserrat',sans-serif;font-size:1.2rem;margin-bottom:.5rem; }
+    .form-success p { color:rgba(255,255,255,.75);font-size:.95rem; }
+
+    /* CONTACT */
+    #contact { background:var(--gris); }
+    .contact-inner { display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto; }
+    .contact-info h3 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.3rem;color:var(--bleu);text-transform:uppercase;margin-bottom:1.5rem; }
+    .contact-item { display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.4rem; }
+    .contact-item .ci-icon { width:46px;height:46px;background:var(--bleu);color:var(--jaune);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;transition:var(--transition); }
+    .contact-item:hover .ci-icon { background:var(--jaune);color:var(--bleu);transform:rotate(15deg); }
+    .contact-item .ci-text strong { display:block;font-weight:700;color:var(--bleu);margin-bottom:2px; }
+    .contact-item .ci-text span { color:#666;font-size:.9rem; }
+    .map-wrapper { border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 40px var(--ombre);height:100%;min-height:380px; }
+    .map-wrapper iframe { width:100%;height:100%;min-height:380px;border:0;display:block; }
+
+    /* FOOTER */
+    footer { background:var(--bleu);color:rgba(255,255,255,.7);padding:60px 5vw 30px; }
+    .footer-inner { display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;max-width:1200px;margin:0 auto;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.1); }
+    .footer-brand .logo { font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.3rem;color:var(--jaune);text-transform:uppercase;letter-spacing:2px;margin-bottom:.8rem; }
+    .footer-brand p { font-size:.9rem;line-height:1.7;max-width:280px; }
+    .footer-brand .socials { display:flex;gap:.8rem;margin-top:1.2rem; }
+    .socials a { width:36px;height:36px;background:rgba(255,255,255,.1);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:var(--transition); }
+    .socials a:hover { background:var(--jaune);color:var(--bleu);transform:translateY(-3px); }
+    .footer-col h4 { font-family:'Montserrat',sans-serif;font-weight:700;font-size:.92rem;text-transform:uppercase;color:var(--jaune);letter-spacing:1px;margin-bottom:1.2rem; }
+    .footer-col ul li { margin-bottom:.6rem; }
+    .footer-col ul li a { color:rgba(255,255,255,.65);font-size:.88rem;transition:var(--transition);display:flex;align-items:center;gap:.4rem; }
+    .footer-col ul li a::before { content:'›';color:var(--jaune);font-weight:700; }
+    .footer-col ul li a:hover { color:var(--jaune);padding-left:4px; }
+    .footer-bottom { text-align:center;padding-top:1.5rem;font-size:.83rem;color:rgba(255,255,255,.4);max-width:1200px;margin:0 auto; }
+    .footer-bottom span { color:var(--jaune); }
+
+    .whatsapp-btn { position:fixed;bottom:28px;right:28px;width:58px;height:58px;background:#25D366;color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 6px 24px rgba(37,211,102,.5);z-index:999;animation:pulse-ring 2.5s ease-in-out infinite;transition:var(--transition); }
+    .whatsapp-btn:hover { transform:scale(1.15); }
+
+    .reveal { opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+
+    @media(max-width:900px){
+      .hero-3d{display:none}
+      .footer-inner{grid-template-columns:1fr 1fr}
+      .contact-inner{grid-template-columns:1fr}
+      .process-steps::before{display:none}
+      .form-row{grid-template-columns:1fr}
+      .form-group.full{grid-column:span 1}
+      .galerie-grid{grid-template-columns:1fr 1fr}
+      .galerie-item.large{grid-column:span 2}
+    }
+    @media(max-width:600px){
+      nav{padding:0 4vw}
+      .nav-links{display:none}
+      .hamburger{display:flex}
+      section{padding:60px 4vw}
+      .footer-inner{grid-template-columns:1fr}
+      .tarifs-grid{flex-direction:column;align-items:center}
+      .tarif-card.popular{transform:scale(1)}
+      .hero-text h1{font-size:1.9rem}
+      .stats-inner{gap:1rem}
+      .hero-btns{flex-direction:column;align-items:flex-start}
+      .galerie-grid{grid-template-columns:1fr}
+      .galerie-item.large{grid-column:span 1}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <span class="nav-icon">🚚</span>
+    E-<span style="color:var(--jaune)">Touré</span>&nbsp;<span style="color:rgba(255,255,255,.6);font-weight:400">SERVICE</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#pourquoi">Pourquoi Nous</a></li>
+    <li><a href="#temoignages">Avis Clients</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#devis" class="nav-cta">Devis Gratuit</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#galerie" onclick="closeMenu()">Galerie</a>
+  <a href="#pourquoi" onclick="closeMenu()">Pourquoi Nous</a>
+  <a href="#temoignages" onclick="closeMenu()">Avis Clients</a>
+  <a href="#tarifs" onclick="closeMenu()">Tarifs</a>
+  <a href="#devis" onclick="closeMenu()" style="color:var(--jaune)!important">→ Devis Gratuit</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-circles"><span></span><span></span><span></span></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🏆 N°1 du Déménagement Professionnel</div>
+      <h1>E-TOURÉ<br><span>SERVICE</span><br>Votre Déménagement,<br>Notre Expertise.</h1>
+      <p>Déménagement résidentiel, professionnel, transport de meubles et emballage soigné. Rapide, sécurisé et sans stress partout en France.</p>
+      <div class="hero-btns">
+        <a href="#devis" class="btn-primary">📋 Devis Gratuit</a>
+        <a href="tel:+33759649391" class="btn-outline">📞 Appelez-Nous</a>
+      </div>
+    </div>
+
+    <div class="hero-3d">
+      <div class="truck-scene">
+        <svg class="truck-svg" viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2A4999"/>
+              <stop offset="100%" stop-color="#0D1B3E"/>
+            </linearGradient>
+            <linearGradient id="cabGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1A2F6B"/>
+              <stop offset="100%" stop-color="#0A1530"/>
+            </linearGradient>
+            <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3A5BB0"/>
+              <stop offset="100%" stop-color="#1A2F6B"/>
+            </linearGradient>
+            <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#B3D9F5" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#2A6099" stop-opacity=".6"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <ellipse cx="250" cy="305" rx="210" ry="12" fill="rgba(0,0,0,0.35)"/>
+          <rect x="48" y="88" width="290" height="148" rx="8" fill="#071228"/>
+          <rect x="38" y="78" width="290" height="148" rx="8" fill="url(#bodyGrad)"/>
+          <rect x="38" y="78" width="290" height="30" rx="8" fill="url(#roofGrad)"/>
+          <rect x="38" y="105" width="290" height="6" fill="#F5E642"/>
+          <rect x="55" y="116" width="256" height="70" rx="6" fill="white" opacity=".96"/>
+          <rect x="55" y="116" width="256" height="70" rx="6" fill="none" stroke="#F5E642" stroke-width="2.5"/>
+          <text x="183" y="140" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="17" fill="#0D1B3E" letter-spacing="1.5">E-TOURÉ SERVICE</text>
+          <line x1="75" y1="147" x2="291" y2="147" stroke="#F5E642" stroke-width="1.5"/>
+          <text x="183" y="162" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="600" font-size="8.5" fill="#1A2F6B" letter-spacing="2">DÉMÉNAGEMENT PROFESSIONNEL</text>
+          <text x="183" y="176" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="9" fill="#0D1B3E" letter-spacing="1">📞 +33 759 649 391</text>
+          <rect x="38" y="194" width="290" height="10" fill="#F5E642"/>
+          <rect x="38" y="204" width="290" height="22" rx="0" fill="#071228"/>
+          <rect x="330" y="108" width="118" height="130" rx="10" fill="#050E20"/>
+          <rect x="322" y="98" width="118" height="130" rx="10" fill="url(#cabGrad)"/>
+          <rect x="322" y="98" width="118" height="28" rx="10" fill="#1A3578"/>
+          <rect x="322" y="123" width="118" height="5" fill="#F5E642"/>
+          <rect x="334" y="102" width="90" height="60" rx="7" fill="url(#glassGrad)"/>
+          <polygon points="338,105 345,105 336,155 332,155" fill="white" opacity=".18"/>
+          <rect x="334" y="102" width="90" height="60" rx="7" fill="none" stroke="#0D1B3E" stroke-width="3"/>
+          <rect x="334" y="168" width="30" height="22" rx="4" fill="url(#glassGrad)" opacity=".8"/>
+          <rect x="334" y="168" width="30" height="22" rx="4" fill="none" stroke="#0D1B3E" stroke-width="2"/>
+          <rect x="432" y="152" width="18" height="10" rx="3" fill="#FFFDE0"/>
+          <ellipse cx="441" cy="157" rx="12" ry="7" fill="#F5E642" opacity=".25" filter="url(#glow)"/>
+          <rect x="432" y="164" width="10" height="6" rx="2" fill="#FF8C00" opacity=".9"/>
+          <rect x="434" y="175" width="5" height="30" rx="2" fill="#F5E642" opacity=".6"/>
+          <rect x="441" y="175" width="5" height="30" rx="2" fill="#F5E642" opacity=".6"/>
+          <rect x="448" y="175" width="5" height="30" rx="2" fill="#F5E642" opacity=".6"/>
+          <rect x="428" y="210" width="32" height="12" rx="5" fill="#F5E642"/>
+          <rect x="322" y="204" width="118" height="10" fill="#F5E642"/>
+          <rect x="322" y="214" width="118" height="12" rx="0" fill="#071228"/>
+          <rect x="38" y="226" width="402" height="16" rx="4" fill="#050E20"/>
+          <rect x="38" y="224" width="402" height="10" rx="4" fill="#0D1B3E"/>
+          <rect x="338" y="226" width="60" height="8" rx="3" fill="#1A2F6B"/>
+          <g>
+            <circle cx="395" cy="252" r="34" fill="#111"/>
+            <circle cx="395" cy="252" r="27" fill="#1e1e1e"/>
+            <circle cx="395" cy="252" r="20" fill="#0D1B3E"/>
+            <circle cx="395" cy="252" r="13" fill="#F5E642"/>
+            <circle cx="395" cy="252" r="7" fill="#D4C800"/>
+            <line x1="395" y1="239" x2="395" y2="227" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="395" y1="265" x2="395" y2="277" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="382" y1="252" x2="370" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="408" y1="252" x2="420" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="386" y1="243" x2="378" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="404" y1="261" x2="412" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="404" y1="243" x2="412" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="386" y1="261" x2="378" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g>
+            <circle cx="115" cy="252" r="34" fill="#111"/>
+            <circle cx="115" cy="252" r="27" fill="#1e1e1e"/>
+            <circle cx="115" cy="252" r="20" fill="#0D1B3E"/>
+            <circle cx="115" cy="252" r="13" fill="#F5E642"/>
+            <circle cx="115" cy="252" r="7" fill="#D4C800"/>
+            <line x1="115" y1="239" x2="115" y2="227" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="115" y1="265" x2="115" y2="277" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="102" y1="252" x2="90" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="128" y1="252" x2="140" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="106" y1="243" x2="98" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="124" y1="261" x2="132" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="124" y1="243" x2="132" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="106" y1="261" x2="98" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g>
+            <circle cx="185" cy="252" r="34" fill="#111"/>
+            <circle cx="185" cy="252" r="27" fill="#1e1e1e"/>
+            <circle cx="185" cy="252" r="20" fill="#0D1B3E"/>
+            <circle cx="185" cy="252" r="13" fill="#F5E642"/>
+            <circle cx="185" cy="252" r="7" fill="#D4C800"/>
+            <line x1="185" y1="239" x2="185" y2="227" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="185" y1="265" x2="185" y2="277" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="172" y1="252" x2="160" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="198" y1="252" x2="210" y2="252" stroke="#0D1B3E" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="176" y1="243" x2="168" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="194" y1="261" x2="202" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="194" y1="243" x2="202" y2="235" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+            <line x1="176" y1="261" x2="168" y2="269" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <rect x="316" y="118" width="10" height="16" rx="3" fill="#1A2F6B" stroke="#F5E642" stroke-width="1"/>
+          <rect x="308" y="115" width="10" height="12" rx="2" fill="#2A4999" stroke="#F5E642" stroke-width="1"/>
+          <line x1="368" y1="98" x2="368" y2="72" stroke="#F5E642" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="368" cy="70" r="3" fill="#F5E642"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal"><div class="num" data-target="1500">0</div><div class="label">Clients Satisfaits</div></div>
+    <div class="stat-item reveal"><div class="num" data-target="8">0</div><div class="label">Années d'Expérience</div></div>
+    <div class="stat-item reveal"><div class="num" data-target="24">0</div><div class="label">Villes Desservies</div></div>
+    <div class="stat-item reveal"><div class="num" data-target="99">0</div><div class="label">% de Satisfaction</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-title reveal">
+    <div class="tag">Ce que nous faisons</div>
+    <h2>Nos <span>Services</span></h2>
+    <p>Une gamme complète de prestations pour un déménagement 100% serein.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal"><div class="service-icon">🏠</div><h3>Déménagement Résidentiel</h3><p>Transfert complet de votre maison ou appartement avec soin et professionnalisme. Emballage, transport et installation inclus.</p></div>
+    <div class="service-card reveal"><div class="service-icon">🏢</div><h3>Déménagement Bureau</h3><p>Relocalisation d'entreprise organisée et rapide pour minimiser l'interruption de votre activité professionnelle.</p></div>
+    <div class="service-card reveal"><div class="service-icon">📦</div><h3>Emballage & Conditionnement</h3><p>Matériaux d'emballage de qualité. Vos objets fragiles et précieux sont protégés et inventoriés avec soin.</p></div>
+    <div class="service-card reveal"><div class="service-icon">🚛</div><h3>Transport Longue Distance</h3><p>Déménagement inter-villes en France avec flotte de véhicules modernes et sécurisés.</p></div>
+    <div class="service-card reveal"><div class="service-icon">🪑</div><h3>Montage & Démontage</h3><p>Notre équipe assemble et désassemble vos meubles avec expertise. Aucun outil, aucun effort de votre part.</p></div>
+    <div class="service-card reveal"><div class="service-icon">🏪</div><h3>Stockage & Garde-Meuble</h3><p>Espaces de stockage sécurisés pour vos affaires pendant la transition, à court ou long terme.</p></div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="galerie">
+  <div class="section-title reveal">
+    <div class="tag">Notre Travail</div>
+    <h2>Galerie <span>Photos</span></h2>
+    <p>Nos équipes en action — sérieux, soin et efficacité à chaque déménagement.</p>
+  </div>
+  <div class="galerie-grid">
+    <div class="galerie-item large reveal">
+      <img src="https://images.unsplash.com/photo-1591129841117-3adfd313e34f?w=900&q=85" alt="Camion de déménagement professionnel" loading="lazy" onerror="this.src='https://placehold.co/900x550/1A2F6B/F5E642?text=E-Touré+Service'"/>
+      <div class="overlay"><span>🚛 Transport Professionnel</span></div>
+    </div>
+    <div class="galerie-item reveal">
+      <img src="https://images.unsplash.com/photo-1527515545081-5db817172677?w=600&q=85" alt="Emballage soigné" loading="lazy" onerror="this.src='https://placehold.co/600x450/1A2F6B/F5E642?text=Emballage'"/>
+      <div class="overlay"><span>📦 Emballage Soigné</span></div>
+    </div>
+    <div class="galerie-item reveal">
+      <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=85" alt="Déménageurs professionnels" loading="lazy" onerror="this.src='https://placehold.co/600x450/1A2F6B/F5E642?text=Notre+Équipe'"/>
+      <div class="overlay"><span>👷 Notre Équipe</span></div>
+    </div>
+    <div class="galerie-item reveal">
+      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=85" alt="Salon nouvellement installé" loading="lazy" onerror="this.src='https://placehold.co/600x450/1A2F6B/F5E642?text=Installation'"/>
+      <div class="overlay"><span>🛋️ Installation Parfaite</span></div>
+    </div>
+    <div class="galerie-item reveal">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=85" alt="Cartons bien organisés" loading="lazy" onerror="this.src='https://placehold.co/600x450/1A2F6B/F5E642?text=Organisation'"/>
+      <div class="overlay"><span>📋 Organisation Impeccable</span></div>
+    </div>
+    <div class="galerie-item reveal">
+      <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=85" alt="Nouvelle maison" loading="lazy" onerror="this.src='https://placehold.co/600x450/1A2F6B/F5E642?text=Nouveau+Chez+Vous'"/>
+      <div class="overlay"><span>🏠 Nouveau Chez-Vous</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI -->
+<section id="pourquoi">
+  <div class="section-title reveal">
+    <div class="tag" style="background:var(--jaune);color:var(--bleu)">Nos Atouts</div>
+    <h2>Pourquoi Choisir <span style="color:var(--jaune)">E-Touré Service</span> ?</h2>
+    <p>Nous sommes vos partenaires de confiance pour chaque déménagement.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal"><span class="icon">🛡️</span><h3>Assurance Complète</h3><p>Tous vos biens sont assurés pendant le transport. En cas de dommage, nous couvrons intégralement.</p></div>
+    <div class="why-card reveal"><span class="icon">⚡</span><h3>Rapidité & Ponctualité</h3><p>Nous respectons vos horaires. Votre temps est précieux, nos équipes arrivent toujours à l'heure.</p></div>
+    <div class="why-card reveal"><span class="icon">💰</span><h3>Prix Transparents</h3><p>Devis gratuit et détaillé. Aucun frais caché, aucune mauvaise surprise.</p></div>
+    <div class="why-card reveal"><span class="icon">👷</span><h3>Équipe Qualifiée</h3><p>Déménageurs formés, expérimentés et respectueux. Votre domicile est traité avec soin.</p></div>
+    <div class="why-card reveal"><span class="icon">📱</span><h3>Suivi En Temps Réel</h3><p>Suivez votre déménagement en temps réel depuis votre téléphone. Transparence totale.</p></div>
+    <div class="why-card reveal"><span class="icon">🌍</span><h3>Couverture Nationale</h3><p>Présents dans les principales villes de France. Paris, Lille, Lens et plus.</p></div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section id="processus">
+  <div class="section-title reveal">
+    <div class="tag">Simple & Efficace</div>
+    <h2>Comment <span>Ça Marche</span> ?</h2>
+    <p>4 étapes simples pour votre déménagement clé en main.</p>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">01</div><h3>Contactez-Nous</h3><p>Appelez, WhatsApp ou remplissez le formulaire de devis en ligne.</p></div>
+    <div class="step reveal"><div class="step-num">02</div><h3>Évaluation Gratuite</h3><p>Un expert visite votre domicile pour évaluer le volume et établir un devis précis.</p></div>
+    <div class="step reveal"><div class="step-num">03</div><h3>Jour J</h3><p>Nos équipes arrivent à l'heure, emballent, chargent et transportent vos affaires.</p></div>
+    <div class="step reveal"><div class="step-num">04</div><h3>Installation</h3><p>Livraison, déballage et installation dans votre nouveau chez-vous. Clé en main !</p></div>
+  </div>
+</section>
+
+<!-- TEMOIGNAGES -->
+<section id="temoignages">
+  <div class="section-title reveal">
+    <div class="tag">Ils Nous Font Confiance</div>
+    <h2>Avis de Nos <span>Clients</span></h2>
+    <p>Plus de 1500 familles et entreprises ont fait confiance à E-Touré Service.</p>
+  </div>
+  <div class="temoignages-grid">
+    <div class="temoignage-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>Service impeccable ! L'équipe était ponctuelle, soigneuse et très professionnelle. Mon déménagement de Paris à Lille s'est passé sans aucun problème. Je recommande vivement !</blockquote>
+      <div class="author"><div class="author-avatar">AK</div><div class="author-info"><strong>Monroe Juliette</strong><span>Paris → Rhône-Alpes</span></div></div>
+    </div>
+    <div class="temoignage-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>Excellent rapport qualité/prix. Le devis était transparent, aucun frais supplémentaire. Toutes nos affaires de bureau ont été transportées en parfait état. Très satisfait !</blockquote>
+      <div class="author"><div class="author-avatar">MB</div><div class="author-info"><strong>M. Bernard</strong><span>Déménagement Bureau – Île-de-France</span></div></div>
+    </div>
+    <div class="temoignage-card reveal">
+      <div class="stars">★★★★★</div>
+      <blockquote>Rapides, efficaces et respectueux. Ils ont même remonté tous mes meubles sans me demander quoi que ce soit. Je n'aurais pas pu espérer mieux. Merci l'équipe !</blockquote>
+      <div class="author"><div class="author-avatar">FT</div><div class="author-info"><strong>Ousmane Faye</strong><span>Paris → Saint-Denis</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="section-title reveal">
+    <div class="tag">Nos Formules</div>
+    <h2>Tarifs <span>Transparents</span></h2>
+    <p>Choisissez la formule adaptée. Tous les devis sont gratuits et sans engagement.</p>
+  </div>
+  <div class="tarifs-grid">
+    <div class="tarif-card reveal">
+      <h3>Studio / Petit Appart.</h3>
+      <div class="price">Sur <span>Devis</span></div>
+      <ul><li>Jusqu'à 20 m³</li><li>1 camion léger</li><li>Emballage de base</li><li>Transport local</li><li>2 déménageurs</li></ul>
+      <a href="#devis" class="btn-primary" style="display:inline-block;padding:12px 28px;font-size:.9rem">Demander un Devis</a>
+    </div>
+    <div class="tarif-card popular reveal">
+      <div class="popular-badge">Populaire</div>
+      <h3>Grand Appartement</h3>
+      <div class="price">Sur <span>Devis</span></div>
+      <ul><li>20 à 50 m³</li><li>Camion 20T inclus</li><li>Emballage premium</li><li>Transport national</li><li>4 déménageurs</li><li>Montage inclus</li></ul>
+      <a href="#devis" class="btn-primary" style="display:inline-block;padding:12px 28px;font-size:.9rem">Demander un Devis</a>
+    </div>
+    <div class="tarif-card reveal">
+      <h3>Maison / Bureau</h3>
+      <div class="price">Sur <span>Devis</span></div>
+      <ul><li>Plus de 50 m³</li><li>Flotte dédiée</li><li>Emballage complet</li><li>Toute la France</li><li>Chef de projet dédié</li><li>Assurance incluse</li></ul>
+      <a href="#devis" class="btn-primary" style="display:inline-block;padding:12px 28px;font-size:.9rem">Demander un Devis</a>
+    </div>
+  </div>
+</section>
+
+<!-- DEVIS -->
+<section id="devis">
+  <div class="section-title reveal">
+    <div class="tag" style="background:var(--jaune);color:var(--bleu)">Gratuit & Sans Engagement</div>
+    <h2 style="color:var(--blanc)">Demandez Votre <span style="color:var(--jaune)">Devis Gratuit</span></h2>
+    <p>Remplissez ce formulaire et nous vous contactons sous 2h.</p>
+  </div>
+  <form class="devis-form reveal" id="devisForm" action="https://formspree.io/f/xykagene" method="POST" onsubmit="submitForm(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label>👤 Nom Complet</label>
+        <input type="text" name="nom" placeholder="Votre nom et prénom" required/>
+      </div>
+      <div class="form-group">
+        <label>📞 Téléphone</label>
+        <input type="tel" name="telephone" placeholder="+33 XX XX XX XX" required/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>📧 Email</label>
+        <input type="email" name="email" placeholder="votre@email.com" required/>
+      </div>
+      <div class="form-group">
+        <label>📍 Ville de Départ</label>
+        <input type="text" name="ville_depart" placeholder="Ex: Paris" required/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>🏁 Ville d'Arrivée</label>
+        <input type="text" name="ville_arrivee" placeholder="Ex: Lyon – Quartier" required/>
+      </div>
+      <div class="form-group">
+        <label>🏠 Type de Bien</label>
+        <select name="type_bien" required>
+          <option value="">Sélectionnez…</option>
+          <option>Studio</option>
+          <option>Appartement 2 pièces</option>
+          <option>Appartement 3+ pièces</option>
+          <option>Maison</option>
+          <option>Bureau / Local commercial</option>
+          <option>Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>📅 Date Souhaitée</label>
+        <input type="date" name="date" required/>
+      </div>
+      <div class="form-group full">
+        <label>💬 Message (optionnel)</label>
+        <textarea name="message" placeholder="Décrivez votre besoin, objets particuliers, étage, etc."></textarea>
+      </div>
+    </div>
+    <div class="form-submit">
+      <button type="submit" id="submitBtn">🚀 Envoyer ma Demande de Devis</button>
+    </div>
+    <div class="form-success" id="formSuccess">
+      <div class="success-icon">✅</div>
+      <h3>Demande envoyée avec succès !</h3>
+      <p>Merci ! Nous vous contactons sous 2h pour votre devis gratuit.</p>
+    </div>
+  </form>
+</section>
+
+<!-- CONTACT + MAPS -->
+<section id="contact">
+  <div class="section-title reveal">
+    <div class="tag">Contactez-Nous</div>
+    <h2>Nous <span>Sommes Là</span></h2>
+    <p>Disponibles 6j/7 de 7h à 20h. Appelez-nous ou venez nous voir.</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <h3>Informations de Contact</h3>
+      <div class="contact-item"><div class="ci-icon">📞</div><div class="ci-text"><strong>Téléphone</strong><span>+33 7 59 64 93 91</span></div></div>
+      <div class="contact-item"><div class="ci-icon">💬</div><div class="ci-text"><strong>WhatsApp</strong><span>+33 6 24 08 74 56</span></div></div>
+      <div class="contact-item"><div class="ci-icon">✉️</div><div class="ci-text"><strong>Email</strong><span>etoureservice@gmail.com</span></div></div>
+      <div class="contact-item"><div class="ci-icon">📍</div><div class="ci-text"><strong>Adresse</strong><span>1 rue Pierre Marie Curie, 60110 Méru, France</span></div></div>
+      <div class="contact-item"><div class="ci-icon">🕐</div><div class="ci-text"><strong>Horaires</strong><span>Lun–Sam : 7h00 – 20h00 | Dim : 9h – 16h</span></div></div>
+    </div>
+    <div class="map-wrapper reveal">
+      <iframe title="Localisation E-Touré Service"
+        src="https://www.google.com/maps?q=49.233846,2.1374658&z=16&output=embed"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">🚚 E-Touré Service</div>
+      <p>Votre partenaire de confiance pour tous vos déménagements en France. Professionnalisme, rapidité et sécurité garantis.</p>
+      <div class="socials">
+        <a href="#" title="Facebook">📘</a>
+        <a href="#" title="Instagram">📸</a>
+        <a href="#" title="WhatsApp">💬</a>
+        <a href="#" title="LinkedIn">💼</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Déménagement Résidentiel</a></li>
+        <li><a href="#services">Déménagement Bureau</a></li>
+        <li><a href="#services">Emballage</a></li>
+        <li><a href="#services">Longue Distance</a></li>
+        <li><a href="#services">Garde-Meuble</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Liens Utiles</h4>
+      <ul>
+        <li><a href="#hero">Accueil</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#pourquoi">Pourquoi Nous</a></li>
+        <li><a href="#tarifs">Nos Tarifs</a></li>
+        <li><a href="#temoignages">Avis Clients</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Rapide</h4>
+      <ul>
+        <li><a href="tel:+33759649391">📞 +33 7 59 64 93 91</a></li>
+        <li><a href="mailto:etoureservice@gmail.com">✉️ Email</a></li>
+        <li><a href="#devis">📋 Devis Gratuit</a></li>
+        <li><a href="#contact">📍 Notre Adresse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 <span>E-Touré Service</span>. Tous droits réservés. Déménagement Professionnel en France.</div>
+</footer>
+
+<a href="https://wa.me/33624087456" class="whatsapp-btn" title="WhatsApp" target="_blank" rel="noopener">💬</a>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Menu mobile
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Reveal animation
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Compteurs animés
+  const cobs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target, t = +el.dataset.target;
+        const s = t == 99 ? '%' : t >= 1000 ? '+' : '';
+        let c = 0;
+        const step = Math.ceil(t / 60);
+        const ti = setInterval(() => {
+          c += step;
+          if (c >= t) { c = t; clearInterval(ti); }
+          el.textContent = c.toLocaleString() + s;
+        }, 25);
+        cobs.unobserve(el);
+      }
+    });
+  }, { threshold: .5 });
+  document.querySelectorAll('.num[data-target]').forEach(c => cobs.observe(c));
+
+  // ✅ FORMULAIRE FORMSPREE — VERSION CORRIGÉE
+  async function submitForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const btn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('formSuccess');
+
+    // État chargement
+    btn.textContent = '⏳ Envoi en cours...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch('https://formspree.io/f/xykagene', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if (response.ok) {
+        // Succès : cacher le formulaire, afficher message
+        form.querySelectorAll('.form-row, .form-submit').forEach(el => el.style.display = 'none');
+        successMsg.style.display = 'block';
+        form.reset();
+      } else {
+        // Erreur serveur
+        const data = await response.json();
+        btn.textContent = '❌ Erreur, réessayez';
+        btn.disabled = false;
+        console.error('Formspree error:', data);
+      }
+    } catch (error) {
+      // Erreur réseau
+      btn.textContent = '❌ Erreur réseau';
+      btn.disabled = false;
+      console.error('Network error:', error);
+    }
+  }
+
+  // Surlignage nav au scroll
+  const secs = document.querySelectorAll('section[id]');
+  const nls = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+    nls.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--jaune)' : ''; });
+  });
+</script>
+</body>
+</html>
